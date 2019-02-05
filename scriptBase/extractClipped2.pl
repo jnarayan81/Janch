@@ -33,7 +33,7 @@ open SAM,"$ARGV[0]";
 		my @clipSizeH = split /[A-Z]/, $sam[5];
 		my $stValH = $sam[3]+$clipSizeH[0];
 		my $edValH = $sam[3]+$clipSizeH[-1];
-		#next if $clipSizeH[0] && $clipSizeH[-1] < 500; #Ignore if both end of the scipped reads are less than 500bp (independtly)
+		next if (($clipSizeH[0] < 1000) && ($clipSizeH[-1] < 1000)); #Ignore if both end of the scipped reads are less than 500bp (independtly)
 		print $hf "$sam[0]\t$sam[2]\t$sam[3]\t$sam[5]\t$clipSizeH[0]\t$clipSizeH[-1]\n";
     		#print $hf "'$sam[5]' matches the pattern\n";   
 	}
@@ -41,7 +41,7 @@ open SAM,"$ARGV[0]";
 		my @clipSizeS = split /[A-Z]/, $sam[5]; 
 		my $stValS = $sam[3]+$clipSizeS[0];
 		my $edValS = $sam[3]+$clipSizeS[-1];
-		#next if $clipSizeS[0] && $clipSizeS[-1] < 500;
+		next if (($clipSizeS[0] < 1000) && ($clipSizeS[-1] < 1000));
 		print $sf "$sam[0]\t$sam[2]\t$sam[3]\t$sam[5]\t$clipSizeS[0]\t$clipSizeS[-1]\n";
     		#print $sf "'$sam[5]' matches the pattern\n";   
 	}
