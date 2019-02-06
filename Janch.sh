@@ -49,7 +49,7 @@ $samtools faidx $dir/$ref
 $samtools faidx $dir/$ref | cut -f 1,2 $dir/$ref.fai > $dir/$ref.sizes
 
 echo -e "\n${Green}Make window size${Reset} $bin ${Green} for${Reset} $ref ${Green}genome${Reset}"
-$bedtools makewindows -g $dir/$ref.sizes -w $bin > $dir/$ref.sizes.$bin.bp.windows.bed
+$bedtools makewindows -g $dir/$ref.sizes -w $bin > $dir/$ref.sizes.$bin.bp.windows.bed.win
 
 #split the BAM file
 echo -e "\n${Green}Splitting the BAM file${Reset} $bamLoc"
@@ -87,7 +87,7 @@ for ((i=0; i<${#arr[@]}; i++)); do
 	perl $perlScript/clipped2bed.pl $dir/bothClipped.$fname.txt > $dir/bothClipped.$fname.bed
 
 	#Check the overlapps with window : Check for 0 and 1 based system
-	$bedtools coverage -a $dir/$ref.sizes.$bin.bp.windows.bed -b $dir/bothClipped.$fname.bed > $dir/clipCov.$fname.bed
+	$bedtools coverage -a $dir/$ref.sizes.$bin.bp.windows.bed.win -b $dir/bothClipped.$fname.bed > $dir/clipCov.$fname.bed
 
 	#Extract the name of the chromosomes
 	echo "Extracting chr name"
@@ -112,6 +112,8 @@ for ((i=0; i<${#arr[@]}; i++)); do
 	#$chrName -n $chrName
 
 	#Remove sam
+  #If file is empty
+  find $dir -size  0 -print0 |xargs -0 rm --
 	rm -rf $dir/coverage.$fname.tmp
 	rm -rf $dir/out_$fname.sam
 	rm -rf $dir/*.bed
